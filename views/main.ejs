@@ -1,0 +1,174 @@
+<html>
+  <head>
+    <title><%= title %></title>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+    .itemBox {
+        border: solid 2px #1E90FF;
+        border-radius: 5px;
+        width:400px;
+        height:120px;
+        padding:10px;
+        margin-bottom:10px;
+    }
+    .itemBoxHighlight {
+        border: solid 2px #FFFFFF;
+        border-radius: 5px;
+        width:400px;
+        height:120px;
+        padding:10px;
+        margin-bottom:10px;
+        background-color:#999999;
+    }
+    .deleteBox {
+        float:right;
+        display:none;
+        cursor:pointer;
+    }
+    .successBox {
+        float:right;
+        display:none;
+        cursor:pointer;
+    }
+    text {
+			padding: 10px;
+			font-size: 16px;
+			resize: none;
+		}
+    textarea {
+			padding: 10px;
+			box-sizing: border-box;
+			border: solid 2px #1E90FF;
+			border-radius: 5px;
+			font-size: 16px;
+			resize: none;
+		}
+    </style>
+    <style>
+    #sortable { list-style-type: none; margin: 0; padding: 0; width: 400px; }
+    #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em; height: 18px; }
+    #sortable li span { position: absolute; margin-left: -1.3em; }
+    </style>
+    <script type="text/javascript">
+    function submitItem() {
+        if(!validateItem()) {
+        	return;
+        }
+        alert("등록");
+    }
+    function validateItem() {
+        var items = $("input[type='text'][name='title']");
+        if(items.length == 0) {
+            alert("작성된 아이템이 없습니다.");
+            return false;
+        }
+        var flag = true;
+        for(var i = 0; i < items.length; i++) {
+            if($(items.get(i)).val().trim() == "") {
+                flag = false;
+                alert("내용을 입력하지 않은 항목이 있습니다.");
+                break;
+            }
+        }
+        return flag;
+    }
+    $(function() {
+        $("#itemBoxWrap").sortable({
+            placeholder:"itemBoxHighlight",
+            start: function(event, ui) {
+                ui.item.data('start_pos', ui.item.index());
+            },
+            stop: function(event, ui) {
+                var spos = ui.item.data('start_pos');
+                var epos = ui.item.index();
+    			      reorder();
+            }
+        });
+        $( "#sortable" ).sortable();
+        $( "#sortable" ).disableSelection();
+    });
+    function reorder() {
+        $(".itemBox").each(function(i, box) {
+            $(box).find(".itemNum").html(i + 1);
+        });
+    }
+    function createItem() {
+        $(createBox())
+        .appendTo("#itemBoxWrap")
+        .hover(
+            function() {
+                $(this).find('.deleteBox').show();
+                $(this).find('.successBox').show();
+            },
+            function() {
+                $(this).find('.deleteBox').hide();
+                $(this).find('.successBox').hide();
+            }
+        )
+        .append("<div class='successBox'>[완료]</div>")
+    		.find(".successBox").click(function() {
+            if($(this).parent().find('[name=success]').val()=='true'){
+              $(this).parent().css("background-color","white");
+              $(this).parent().find('[name=success]').val('false');
+            }else{
+              $(this).parent().css("background-color","#ddff55");
+              $(this).parent().find('[name=success]').val('true');
+            }
+        })
+    		.append("<div class='deleteBox'>[삭제]</div>")
+    		.find(".deleteBox").click(function() {
+            var valueCheck = false;
+            $(this).parent().parent().find('textarea').each(function() {
+                if($(this).attr("name") != "type" && $(this).val() != '') {
+                    valueCheck = true;
+                }
+            });
+
+            if(valueCheck) {
+                var delCheck = confirm('입력하신 내용이 있습니다.\n삭제하시겠습니까?');
+            }
+            if(!valueCheck || delCheck == true) {
+                $(this).parent().parent().remove();
+                reorder();
+            }
+        });
+        reorder();
+    }
+    function createBox() {
+        var contents = "<div class='itemBox' >"
+                     + "<div style='float:left;'>"
+                     + "<span class='itemNum'></span> "
+                     + "<input type='hidden' name='success' value='false'>"
+                     + "title: <input type='text' name='title' "
+                     + "style='width:348px; box-sizing: border-box; border: solid 2px #1E90FF; border-radius: 5px;'/>"
+                     + "<br>content:<br> <textarea name='content' style='width:400px;'/>"
+                     + "</div>"
+                     + "</div>";
+        return contents;
+    }
+
+    </script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <% if( !nickname ) { %>
+    <p>로그인을 해주세요.</p>
+    <a href="/login">로그인</a>
+    <a href="/join">회원가입</a>
+    <% } else { %>
+    <p>안녕하세요. <%= nickname %>님</p>
+    <a href="/logout">로그아웃</a>
+    <% } %>
+    <div>
+        <div style="float:left;width:100px;">아이템 추가 : </div>
+        <div style="clar:both;">
+            <input type="button" id="addItem" value="추가" onclick="createItem();" />
+            <input type="button" id="submitItem" value="저장" onclick="submitItem();" />
+        </div>
+    </div>
+    <br />
+    <div id="itemBoxWrap"></div>
+  </body>
+</html>

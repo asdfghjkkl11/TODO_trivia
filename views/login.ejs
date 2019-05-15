@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+      var err="<%=err%>";
+      if(err.trim()!=""){
+        alert("로그인 정보가 맞지 않습니다");
+      }
+    </script>
+</head>
+<body>
+    <form action="/" method="post">
+        아이디 : <input type="text" name="user_id"><br/>
+        비밀번호 :<input type="password" name="user_pwd"><br/>
+        <input type="submit" value="log in">
+        <input type="button" value="cancel" onclick = "history.back(-1);"/>
+    </form>
+</body>
+</html>

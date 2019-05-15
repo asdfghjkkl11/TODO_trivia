@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title><%= title %></title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script>
+      var err="<%=err%>";
+      if(err.trim()!=""){
+        alert("이미 존재하는 아이디입니다");
+      }
+      function onSignSubmit()
+      {
+        if ( $("#user_id").val().trim() == "" )
+        {
+          var message = "아이디를 입력해 주세요";
+          $("#user_id").val("");
+          $("#user_id").focus();
+          alert(message);
+          return false;
+        }
+        if ( $("#user_id").val().trim().length<6)
+        {
+          var message = "아이디는 6글자 이상 가능합니다";
+          $("#user_id").val("");
+          $("#user_id").focus();
+          alert(message);
+          return false;
+        }
+        if ( $("#user_pwd").val().trim() == "" )
+        {
+          var message = "비밀번호를 입력해 주세요";
+          $("#user_pwd").val("");
+          $("#user_pwd").focus();
+          alert(message);
+          return false;
+        }
+        if ( $("#user_pwd").val().trim().length <8 )
+        {
+          var message = "비밀번호는 8글자 이상 가능합니다";
+          $("#user_pwd").val("");
+          $("#user_pwd").focus();
+          alert(message);
+          return false;
+        }
+        if ( $("#user_nickname").val().trim() == "" )
+        {
+          var message = "닉네임을 입력해 주세요";
+          $("#user_nickname").val("");
+          $("#user_nickname").focus();
+          alert(message);
+          return false;
+        }
+      }
+      </script>
+</head>
+<body>
+  <form action="/check" method="post" onsubmit="return onSignSubmit();">
+    <input type="hidden" name="checked" id="checked" value="false">
+    아이디 : <input type="text" name="user_id" id="user_id" required><br/>
+    비밀번호 : <input type="password" name="user_pwd" id="user_pwd" required><br/>
+    닉네임 : <input type="text" name="user_nickname" id="user_nickname" required><br/>
+    <input type="submit" value="sign up" >
+    <input type="button" value="cancel" onclick = "history.back(-1);">
+  </form>
+</body>
+</html>
