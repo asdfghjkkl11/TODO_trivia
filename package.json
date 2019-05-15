@@ -4,6 +4,7 @@
   "description": "summer coding festival",
   "main": "app.js",
   "scripts": {
+    "start": "node main.js",
     "serve": "nodemon main.js"
   },
   "author": "asdfghjkkl11",
