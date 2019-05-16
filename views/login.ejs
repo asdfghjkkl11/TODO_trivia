@@ -8,7 +8,11 @@
     <script>
       var err="<%=err%>";
       if(err.trim()!=""){
-        alert("로그인 정보가 맞지 않습니다");
+        if(err.trim()=='wrong access'){
+          alert("잘못된 접근입니다");
+        }else{
+          alert("로그인 정보가 맞지 않습니다");
+        }
       }
     </script>
 </head>

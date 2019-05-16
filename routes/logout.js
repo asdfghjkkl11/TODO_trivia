@@ -14,6 +14,6 @@ router.get('/', function(req, res, next) {
   res.render('main', { title: 'TODO_trivia',err:'',nickname:'' ,data:[]});
 });
 router.post('/', function(req, res, next) {
-  res.render('login', { title: 'TODO_trivia',err:'' });
+  res.render('login', { title: 'TODO_trivia',err:'wrong access' });
 });
 module.exports = router;

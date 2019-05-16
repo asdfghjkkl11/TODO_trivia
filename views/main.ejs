@@ -53,7 +53,6 @@
 			padding: 10px;
 			box-sizing: border-box;
 			border: solid 2px #1E90FF;
-			border-radius: 5px;
 			font-size: 16px;
 			resize: none;
 		}
@@ -64,17 +63,103 @@
     #sortable li span { position: absolute; margin-left: -1.3em; }
     </style>
     <script type="text/javascript">
-    console.log(<%=data%>);
+    console.log('<%=nickname%>');
+    console.log('<%=data[0].content%>');
     var err="<%=err%>";
     if(err.trim()!=""){
-      if(err.trim=='already login')
+      if(err.trim()=='already login')
         alert("이미 로그인 되어있습니다");
-      else if(err.trim=='not login')
+      else if(err.trim()=='not login')
         alert("로그인을 해주세요");
+      else{
+          alert("잘못된 접근입니다");
+      }
+    }
+    $(document).on("click",".successBox",function(){
+      if($(this).parent().find('[name=success]').val()=='true'){
+        $(this).parent().css("background-color","white");
+        $(this).parent().find('[name=success]').val('false');
+      }else{
+        $(this).parent().css("background-color","#ddff55");
+        $(this).parent().find('[name=success]').val('true');
+      }
+    });
+    $(document).on("click",".deleteBox",function() {
+          var valueCheck = false;
+          $(this).parent().find('textarea').each(function() {
+              if($(this).attr("name") != "type" && $(this).val() != '') {
+                  valueCheck = true;
+              }
+          });
+          if(valueCheck) {
+              var delCheck = confirm('입력하신 내용이 있습니다.\n삭제하시겠습니까?');
+          }
+          if(!valueCheck || delCheck == true) {
+              $(this).parent().remove();
+              reorder();
+          }
+    });
+    $(document).on("change","input[name=check]",function(){
+      if($(this).is(":checked")){
+        $(this).val("true");
+        $(this).parent().find("input[name=todo]").show();
+      }else{
+        $(this).val("false");
+        $(this).parent().find("input[name=todo]").hide();
+      }
+    });
+    function formatDate() {
+      var d = new Date();
+      var month = '' + (d.getMonth() + 1);
+      var day = '' + d.getDate();
+      var year = d.getFullYear();
+      if (month.length < 2){
+         month = '0' + month;
+      }
+      if (day.length < 2){
+         day = '0' + day;
+      }
+      return [year, month, day].join('-');
+    }
+    function makeInput(name,value) {
+      var hiddenField = document.createElement("input");
+      hiddenField.setAttribute("type", "hidden");
+      hiddenField.setAttribute("name", name);
+      hiddenField.setAttribute("value", value);
+      return hiddenField;
     }
     function submitItem() {
         if(!validateItem()) {
         	return;
+        }else{
+          var leng = $(".itemBox").length;
+          var user='<%=Id%>';
+          var timestamp=formatDate();
+          var title = new Array(leng);
+          var content = new Array(leng);
+          var success = new Array(leng);
+          var check = new Array(leng);
+          var todo = new Array(leng);
+          for(var i = 0;i < leng; i++){
+            title[i] = $("input[name=title]")[i].value;
+            content[i] = ($("textarea[name=content]")[i].value==null)?"":$("textarea[name=content]")[i].value;
+            success[i] = $("input[name=success]")[i].value;
+            check[i] = $("input[name=check]")[i].value;
+            todo[i] = $("input[name=todo]")[i].value;
+          }
+          var form = document.createElement("form");
+          form.setAttribute("charset", "UTF-8");
+          form.setAttribute("method", "Post"); // Get 또는 Post 입력
+          form.setAttribute("action", "/upload");
+          form.appendChild(makeInput("user",user));
+          form.appendChild(makeInput("timestamp",timestamp));
+          form.appendChild(makeInput("title",title));
+          form.appendChild(makeInput("content",content));
+          form.appendChild(makeInput("success",success));
+          form.appendChild(makeInput("check",check));
+          form.appendChild(makeInput("todo",todo));
+          document.body.appendChild(form);
+          form.submit();
         }
         alert("등록");
     }
@@ -118,36 +203,7 @@
         $(createBox())
         .appendTo("#itemBoxWrap")
         .append("<div class='successBox'>[완료]</div>")
-    		.find(".successBox").click(function() {
-            if($(this).parent().find('[name=success]').val()=='true'){
-              $(this).parent().css("background-color","white");
-              $(this).parent().find('[name=success]').val('false');
-            }else{
-              $(this).parent().css("background-color","#ddff55");
-              $(this).parent().find('[name=success]').val('true');
-            }
-        })
-    		.append("<div class='deleteBox'>[삭제]</div>")
-    		.find(".deleteBox").click(function() {
-            var valueCheck = false;
-            $(this).parent().parent().find('textarea').each(function() {
-                if($(this).attr("name") != "type" && $(this).val() != '') {
-                    valueCheck = true;
-                }
-            });
-            if(valueCheck) {
-                var delCheck = confirm('입력하신 내용이 있습니다.\n삭제하시겠습니까?');
-            }
-            if(!valueCheck || delCheck == true) {
-                $(this).parent().parent().remove();
-                reorder();
-            }
-        });
-        $(document).ready(function(){
-          $("input[name=check]").change(function(){
-            $("input[name=todo]").fadeToggle();
-          });
-        });
+    		.append("<div class='deleteBox'>[삭제]</div>");
         reorder();
     }
     function createBox() {
@@ -157,18 +213,14 @@
                      + "<input type='hidden' name='success' value='false'>"
                      + "title: <input type='text' name='title' "
                      + "style='width:348px; box-sizing: border-box; border: solid 2px #1E90FF; border-radius: 5px;'>"
-                     + "<br>content:<br> <textarea name='content' style='width:400px;'/>"
-                     + "TODO<input type='checkbox' name='check' checked='true'>"
+                     + "<br>content:<br> <textarea name='content' style='width:400px;'></textarea>"
+                     + "TODO<input type='checkbox' name='check' value='true' checked='true'>"
                      + "<input type='date' name='todo' value='1995-01-01'>"
                      + "</div>"
                      + "</div>";
         return contents;
     }
-    $(document).ready(function(){
-      $("input[name=check]").change(function(){
-        $("input[name=todo]").fadeToggle();
-      });
-    });
+
     </script>
   </head>
   <body>
@@ -194,9 +246,9 @@
     </div>
     <br />
     <div id="itemBoxWrap">
-      <% if( !nickname ) {
+      <% if( nickname ) {
           for(var i = 0;i < data.length; i++){%>
-            <% if( data[i].success ) {%>
+            <% if( data[i].success==true) {%>
               <div class='itemBox'  background="#ddff55" >
             <%}else{%>
               <div class='itemBox'>
@@ -206,14 +258,12 @@
                 <input type='hidden' name='success' value='<%=data[i].success%>'>
                 title: <input type='text' name='title' value='<%=data[i].title%>'
                 style='width:348px; box-sizing: border-box; border: solid 2px #1E90FF; border-radius: 5px;'>
-                <br>content:<br> <textarea name='content' value='<%=data[i].content%>' style='width:400px;'>
-                TODO<input type='checkbox' name='check' checked='true'>
-                <input type='date' name='todo' value='1995-01-01'>
+                <br>content:<br> <textarea name='content' style='width:400px;'><%=data[i].content%></textarea>
+                TODO<input type='checkbox' name='check'  checked='<%=data[i].check%>' value= '<%=data[i].check%>' >
+                <input type='date'  name='todo' value= '<%=data[i].todo%>'>
               </div>
-              <div class="suucessBox">
-                [완료]
-                <div class="deleteBox">[삭제]</div>
-              </div>
+              <div class="successBox">[완료]</div>
+              <div class="deleteBox">[삭제]</div>
             </div>
           <%}
       } %>

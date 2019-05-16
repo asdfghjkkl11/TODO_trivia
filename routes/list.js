@@ -2,24 +2,23 @@ var Realm = require('realm');
 var Lkey = new Int8Array(64);
 let ListSchema = {
   name: 'List',
-  primaryKey:'id',
   properties: {
     user: 'string',
-    id:{type: 'int', indexed: true},
     timestamp: 'string',
-    todo: {type: 'string', optional: true},
     title: 'string',
     content: 'string',
-    success: 'bool'
+    success: 'string',
+    check: 'string',
+    todo: {type: 'string', optional: true}
   }
 };
 var ListRealm = new Realm({
   path: 'List.realm',
   schema: [ListSchema],
   encryptionKey:Lkey,
-  schemaVersion: 1,
+  schemaVersion: 3,
   migration: function(oldRealm, newRealm) {
-    if (oldRealm.schemaVersion < 1) {
+    if (oldRealm.schemaVersion < 3) {
       var oldObjects = oldRealm.objects('List');
       var newObjects = newRealm.objects('List');
       for (var i = 0; i < oldObjects.length; i++) {

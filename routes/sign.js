@@ -6,6 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('sign', { title: 'TODO_trivia',err:'' });
 });
 router.post('/', function(req, res, next) {
-  res.render('sign', { title: 'TODO_trivia',err:'' });
+  res.render('sign', { title: 'TODO_trivia',err:'wrong access' });
 });
 module.exports = router;

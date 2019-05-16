@@ -3,6 +3,9 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var UserRealm= require('./user');
 router.use(bodyParser.urlencoded({extended: true}));
+router.get('/', function(req, res, next) {
+  res.render('login', { title: 'TODO_trivia',err:'wrong access' });
+});
 router.post('/', function(req, res, next) {
   let user=UserRealm.objects('User').filtered(
     'Id= "'+req.body['user_id']+'"');
