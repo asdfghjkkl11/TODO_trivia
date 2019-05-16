@@ -1,23 +1,16 @@
 var Realm = require('realm');
 var Lkey = new Int8Array(64);
-class item{};
-item.schema ={
-  name:'item',
-  properties:{
+let ListSchema = {
+  name: 'List',
+  primaryKey:'id',
+  properties: {
+    user: 'string',
+    id:{type: 'int', indexed: true},
     timestamp: 'string',
     todo: {type: 'string', optional: true},
     title: 'string',
     content: 'string',
     success: 'bool'
-  }
-};
-let ListSchema = {
-  name: 'Todo',
-  primaryKey:'id',
-  properties: {
-    user: 'string',
-    id:{type: 'string', indexed: true},
-    items: {type: 'list', objectType: 'item'}
   }
 };
 var ListRealm = new Realm({

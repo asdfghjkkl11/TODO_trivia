@@ -11,7 +11,7 @@ router.use(session({
 /* GET home page. */
 router.get('/', function(req, res, next) {
   req.session.destroy();
-  res.render('main', { title: 'TODO_trivia',err:'',nickname:'' });
+  res.render('main', { title: 'TODO_trivia',err:'',nickname:'' ,data:[]});
 });
 router.post('/', function(req, res, next) {
   res.render('login', { title: 'TODO_trivia',err:'' });
