@@ -1,3 +1,4 @@
+//todo database of realm
 var Realm = require('realm');
 var Lkey = new Int8Array(64);
 let ListSchema = {

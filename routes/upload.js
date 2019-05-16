@@ -9,9 +9,12 @@ router.use(session({
   secret: '30q85ryhj3n9',
   resave: false,
   saveUninitialized: true,
-  store: new FileStore()
+  store: new FileStore(),
+  cookie:{
+    maxAge: 60*60*1000
+  }
 }));
-/* GET home page. */
+//upload address shouldn't access get
 router.get('/', function(req, res, next) {
   let list=[];
   if(req.session.Id!=null)
@@ -19,6 +22,12 @@ router.get('/', function(req, res, next) {
   else
     res.render('main', { title: 'TODO_trivia',err:'wrong access', Id:"", nickname:"" , data:list});
 });
+//check user login, reload todo-list
+/*
+  if session dosen't exist, back to /login
+  else, delete exist list data and resave data
+  finally back to / reload data
+*/
 router.post('/', function(req, res, next) {
   let list=[];
   if(req.session.Id!=null){
@@ -27,24 +36,29 @@ router.post('/', function(req, res, next) {
     );
     ListRealm.write(() => {
       ListRealm.delete(list);
-      let leng=req.body['title'].length;
-      for(let i = 0;i < leng; i++){
-        console.log(req.body['todo']);
-        ListRealm.create('List', {
-          user: req.body['user'],
-          timestamp: req.body['timestamp'],
-          title: req.body['title'],
-          content: req.body['content'],
-          success: req.body['success'],
-          check: req.body['check'],
-          todo: req.body['todo']
-        });
+      if(req.body['title'].length!=0){
+        let title=req.body['title'].split(',');
+        let content=req.body['content'].split(',');
+        let success=req.body['success'].split(',');
+        let check=req.body['check'].split(',');
+        let todo=req.body['todo'].split(',');
+        let leng=title.length;
+        for(let i = 0;i < leng; i++){
+          ListRealm.create('List', {
+            user: req.body['user'],
+            timestamp: req.body['timestamp'],
+            title: String(title[i]),
+            content: String(content[i]),
+            success: String(success[i]),
+            check: String(check[i]),
+            todo: String(todo[i])
+          });
+        }
       }
     });
     list=ListRealm.objects('List').filtered(
       'user= "'+req.body['user']+'"'
     );
-    console.log(list);
     res.render('main', { title: 'TODO_trivia',err:'', Id:req.session.Id, nickname:req.session.nickname, data:list });
   }else
     res.render('main', { title: 'TODO_trivia',err:'not login', Id:"", nickname:"" , data:list});

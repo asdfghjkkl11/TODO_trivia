@@ -6,6 +6,7 @@
     <title><%= title %></title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
+    //check error
       var err="<%=err%>";
       if(err.trim()!=""){
         if(err.trim()=='wrong access'){
@@ -17,6 +18,9 @@
     </script>
 </head>
 <body>
+    <!-- login form -->
+    <!-- user_id, user_pwd -->
+    <!-- log in(submit), cancel(back) button -->
     <form action="/" method="post">
         아이디 : <input type="text" name="user_id"><br/>
         비밀번호 :<input type="password" name="user_pwd"><br/>

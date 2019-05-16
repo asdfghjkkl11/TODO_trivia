@@ -1,3 +1,4 @@
+//user database of realm
 var Realm = require('realm');
 var Ukey = new Int8Array(64);
 let UserSchema = {

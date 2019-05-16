@@ -6,13 +6,17 @@ router.use(session({
   secret: '30q85ryhj3n9',
   resave: false,
   saveUninitialized: true,
-  store: new FileStore()
+  store: new FileStore(),
+  cookie:{
+    maxAge: 60*60*1000
+  }
 }));
-/* GET home page. */
+//delete session and go to /
 router.get('/', function(req, res, next) {
   req.session.destroy();
-  res.render('main', { title: 'TODO_trivia',err:'',nickname:'' ,data:[]});
+  res.render('main', { title: 'TODO_trivia',err:'', Id:'',nickname:'' ,data:[]});
 });
+//logout address shouldn't access post
 router.post('/', function(req, res, next) {
   res.render('login', { title: 'TODO_trivia',err:'wrong access' });
 });

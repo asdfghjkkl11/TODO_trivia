@@ -4,6 +4,7 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
     <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- css lines -->
     <style>
     .itemBox {
         border: solid 2px #1E90FF;
@@ -64,7 +65,7 @@
     </style>
     <script type="text/javascript">
     console.log('<%=nickname%>');
-    console.log('<%=data[0].content%>');
+    //check error
     var err="<%=err%>";
     if(err.trim()!=""){
       if(err.trim()=='already login')
@@ -75,15 +76,48 @@
           alert("잘못된 접근입니다");
       }
     }
+    //change color of loaded itembox
+    /*
+      default color: white
+      if success, color change #ddff55
+      else if deadline over, color change #222222
+    */
+    $(window).load(function(){
+      $(".itemBox").each(function(i, box) {
+        if($(box).find('[name=check]').val()=='true'){
+          if($(box).find('[name=todo]').val()<formatDate()){
+            $(box).css("background-color","#222222");
+          }
+        }
+        if($(box).find('[name=success]').val()=='true'){
+          $(box).css("background-color","#ddff55");
+        }
+      });
+    });
+    //sense a click of successbox and change background
+    /*
+      default color: white
+      if success, color change #ddff55
+      else if deadline over, color change #222222
+    */
     $(document).on("click",".successBox",function(){
       if($(this).parent().find('[name=success]').val()=='true'){
-        $(this).parent().css("background-color","white");
+        if($(this).parent().find('[name=check]').val()=='true'){
+          if($(this).parent().find('[name=todo]').val()<formatDate()){
+            $(this).parent().css("background-color","#222222");
+          }else{
+            $(this).parent().css("background-color","white");
+          }
+        }else{
+          $(this).parent().css("background-color","white");
+        }
         $(this).parent().find('[name=success]').val('false');
       }else{
         $(this).parent().css("background-color","#ddff55");
         $(this).parent().find('[name=success]').val('true');
       }
     });
+    //sense a click of deletebox and delete itembox
     $(document).on("click",".deleteBox",function() {
           var valueCheck = false;
           $(this).parent().find('textarea').each(function() {
@@ -99,6 +133,7 @@
               reorder();
           }
     });
+    //sense a change of checkbox and change date input show or hide
     $(document).on("change","input[name=check]",function(){
       if($(this).is(":checked")){
         $(this).val("true");
@@ -108,6 +143,7 @@
         $(this).parent().find("input[name=todo]").hide();
       }
     });
+    //return today date
     function formatDate() {
       var d = new Date();
       var month = '' + (d.getMonth() + 1);
@@ -121,6 +157,7 @@
       }
       return [year, month, day].join('-');
     }
+    //make hiddenField to submit and append form
     function makeInput(name,value) {
       var hiddenField = document.createElement("input");
       hiddenField.setAttribute("type", "hidden");
@@ -128,6 +165,16 @@
       hiddenField.setAttribute("value", value);
       return hiddenField;
     }
+    //make form from itemboxs and submit
+    /*
+      user: String
+      timestamp: String
+      title: list
+      content: list
+      success: list
+      check: list
+      todo: list
+    */
     function submitItem() {
         if(!validateItem()) {
         	return;
@@ -135,17 +182,17 @@
           var leng = $(".itemBox").length;
           var user='<%=Id%>';
           var timestamp=formatDate();
-          var title = new Array(leng);
-          var content = new Array(leng);
-          var success = new Array(leng);
-          var check = new Array(leng);
-          var todo = new Array(leng);
+          var title = [];
+          var content = [];
+          var success = [];
+          var check = [];
+          var todo = [];
           for(var i = 0;i < leng; i++){
-            title[i] = $("input[name=title]")[i].value;
-            content[i] = ($("textarea[name=content]")[i].value==null)?"":$("textarea[name=content]")[i].value;
-            success[i] = $("input[name=success]")[i].value;
-            check[i] = $("input[name=check]")[i].value;
-            todo[i] = $("input[name=todo]")[i].value;
+            title.push($("input[name=title]")[i].value);
+            content.push(($("textarea[name=content]")[i].value==null)?"":$("textarea[name=content]")[i].value);
+            success.push($("input[name=success]")[i].value);
+            check.push($("input[name=check]")[i].value);
+            todo.push($("input[name=todo]")[i].value);
           }
           var form = document.createElement("form");
           form.setAttribute("charset", "UTF-8");
@@ -163,11 +210,12 @@
         }
         alert("등록");
     }
+    //check validate when save todo-list
+    //if there is not title, can't save todo-list
     function validateItem() {
         var items = $("input[type='text'][name='title']");
         if(items.length == 0) {
-            alert("작성된 아이템이 없습니다.");
-            return false;
+            return true;
         }
         var flag = true;
         for(var i = 0; i < items.length; i++) {
@@ -179,6 +227,7 @@
         }
         return flag;
     }
+    //sortable function in jquery UI
     $(function() {
         $("#itemBoxWrap").sortable({
             placeholder:"itemBoxHighlight",
@@ -194,11 +243,13 @@
         $( "#sortable" ).sortable();
         $( "#sortable" ).disableSelection();
     });
+    //reorder when create, delete, sortable
     function reorder() {
         $(".itemBox").each(function(i, box) {
             $(box).find(".itemNum").html(i + 1);
         });
     }
+    //create new todo item
     function createItem() {
         $(createBox())
         .appendTo("#itemBoxWrap")
@@ -225,6 +276,7 @@
   </head>
   <body>
     <h1><%= title %></h1>
+    <!-- check login -->
     <% if( !nickname ) { %>
     <p>로그인을 해주세요.</p>
     <a href="/login">로그인</a>
@@ -234,6 +286,7 @@
     <a href="/logout">로그아웃</a>
     <% } %>
     <div>
+        <!-- service only login user -->
         <div style="float:left;width:100px;">TODO-list : </div>
         <div style="clar:both;">
           <% if( nickname ) { %>
@@ -246,13 +299,11 @@
     </div>
     <br />
     <div id="itemBoxWrap">
+      <!-- itemboxs -->
+      <!-- load from realm data -->
       <% if( nickname ) {
           for(var i = 0;i < data.length; i++){%>
-            <% if( data[i].success==true) {%>
-              <div class='itemBox'  background="#ddff55" >
-            <%}else{%>
-              <div class='itemBox'>
-            <%}%>
+            <div class='itemBox'>
               <div style='float:left;'>
                 <span class='itemNum'></span>
                 <input type='hidden' name='success' value='<%=data[i].success%>'>

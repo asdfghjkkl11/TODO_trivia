@@ -9,10 +9,14 @@ router.use(session({
   secret: '30q85ryhj3n9',
   resave: false,
   saveUninitialized: true,
-  store: new FileStore()
+  store: new FileStore(),
+  cookie:{
+    maxAge: 60*60*1000
+  }
 }));
 router.use(bodyParser.urlencoded({extended: true}));
-/* GET home page. */
+//check session whether user already login and go to /
+//if session exist, load data from ListRealm
 router.get('/', function(req, res, next) {
   let list=[];
   if(req.session.Id!=null){
@@ -22,6 +26,11 @@ router.get('/', function(req, res, next) {
   }
   res.render('main', { title: 'TODO_trivia' ,err:'', Id:req.session.Id, nickname:req.session.nickname, data:list});
 });
+//check user login, load todo-list
+/*
+  if session dosen't exist, back to /login
+  else, laod data from ListRealm go to /
+*/
 router.post('/', function(req, res, next) {
   let user=UserRealm.objects('User').filtered(
     'Id= "'+req.body['user_id']+'" AND '+

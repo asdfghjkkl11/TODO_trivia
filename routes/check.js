@@ -3,9 +3,15 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var UserRealm= require('./user');
 router.use(bodyParser.urlencoded({extended: true}));
+//check address shouldn't access get
 router.get('/', function(req, res, next) {
   res.render('login', { title: 'TODO_trivia',err:'wrong access' });
 });
+//check UserRealm whether user_id already exist
+/*
+  if sign up success, go to /login
+  else, back to /sign 
+*/
 router.post('/', function(req, res, next) {
   let user=UserRealm.objects('User').filtered(
     'Id= "'+req.body['user_id']+'"');
