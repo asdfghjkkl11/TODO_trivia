@@ -1,31 +1,64 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><%= title %></title>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= title %></title>
+  <style>
+    #frame{
+      width: 300px;
+      height: 200px;
+      margin: 0 auto;
+      margin-top: 30%;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-bottom: 50px;
+      background-color: rgba(0,0,0,0.8);
+    }
+    body{
+      background-repeat : repeat;
+      background-image: url('/static/images/bg.png');
+      color: #f2f2f2;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script>
     //check error
-      var err="<%=err%>";
-      if(err.trim()!=""){
-        if(err.trim()=='wrong access'){
-          alert("잘못된 접근입니다");
-        }else{
-          alert("로그인 정보가 맞지 않습니다");
-        }
+    var err="<%=err%>";
+    if(err.trim()!=""){
+      if(err.trim()=='wrong access'){
+        alert("잘못된 접근입니다");
+      }else{
+        alert("로그인 정보가 맞지 않습니다");
       }
-    </script>
+    }
+  </script>
 </head>
 <body>
-    <!-- login form -->
-    <!-- user_id, user_pwd -->
-    <!-- log in(submit), cancel(back) button -->
-    <form action="/" method="post">
-        아이디 : <input type="text" name="user_id"><br/>
-        비밀번호 :<input type="password" name="user_pwd"><br/>
-        <input type="submit" value="log in">
-        <input type="button" value="cancel" onclick = "history.back(-1);"/>
+  <!-- login form -->
+  <!-- user_id, user_pwd -->
+  <!-- log in(submit), cancel(back) button -->
+  <div id="frame">
+    <form action="/" method="post" weight="0">
+      <table>
+        <tr>
+          <td colspan="2"><p align="center"><%=title%> : Log In</p></td>
+        </tr>
+        <tr>
+          <td><p>아이디 : </p></td>
+          <td><input type="text" name="user_id"></td>
+        </tr>
+        <tr>
+          <td><p>비밀번호 : &nbsp</p></td>
+          <td><input type="password" name="user_pwd"></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="log in"></td>
+          <td><input type="button" value="cancel" onclick = "history.back(-1);"/></td>
+        </tr>
+      </table>
     </form>
+  </div>
 </body>
 </html>

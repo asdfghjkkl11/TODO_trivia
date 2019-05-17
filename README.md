@@ -8,3 +8,4 @@ session-file-store
 body-parser
 realm
 nodemon
+fs

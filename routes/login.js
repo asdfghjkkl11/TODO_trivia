@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 //check session whether user already login
 /*
   if session exist, back to /main

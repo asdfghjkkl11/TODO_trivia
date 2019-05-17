@@ -47,7 +47,6 @@ router.post('/', function(req, res, next) {
         'user= "'+req.session.Id+'"'
       );
     }
-    console.log(list);
     res.render('main', { title: 'TODO_trivia',err:'', Id:req.session.Id, nickname:req.session.nickname,data:list});
   }
 });

@@ -1,82 +1,112 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= title %></title>
+    <style>
+      #frame{
+        width: 300px;
+        height: 230px;
+        margin: 0 auto;
+        margin-top: 30%;
+        padding-left: 50px;
+        padding-right: 50px;
+        padding-bottom: 50px;
+        background-color: rgba(0,0,0,0.8);
+      }
+      body{
+        background-repeat : repeat;
+        background-image: url('/static/images/bg.png');
+        color: #f2f2f2;
+      }
+    </style>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script>
-      //check error
-      var err="<%=err%>";
-      if(err.trim()!=""){
-        if(err.trim()=='wrong access'){
-          alert("잘못된 접근입니다");
-        }else{
-          alert("이미 존재하는 아이디입니다");
-        }
+    //check error
+    var err="<%=err%>";
+    if(err.trim()!=""){
+      if(err.trim()=='wrong access'){
+        alert("잘못된 접근입니다");
+      }else{
+        alert("이미 존재하는 아이디입니다");
       }
-      //check validate sign up condition
-      /*
-        check empty field
-        ID length >= 6
-        password length >= 8
-      */
-      function onSignSubmit()
-      {
-        if ( $("#user_id").val().trim() == "" )
-        {
-          var message = "아이디를 입력해 주세요";
-          $("#user_id").val("");
-          $("#user_id").focus();
-          alert(message);
-          return false;
-        }
-        if ( $("#user_id").val().trim().length<6)
-        {
-          var message = "아이디는 6글자 이상 가능합니다";
-          $("#user_id").val("");
-          $("#user_id").focus();
-          alert(message);
-          return false;
-        }
-        if ( $("#user_pwd").val().trim() == "" )
-        {
-          var message = "비밀번호를 입력해 주세요";
-          $("#user_pwd").val("");
-          $("#user_pwd").focus();
-          alert(message);
-          return false;
-        }
-        if ( $("#user_pwd").val().trim().length <8 )
-        {
-          var message = "비밀번호는 8글자 이상 가능합니다";
-          $("#user_pwd").val("");
-          $("#user_pwd").focus();
-          alert(message);
-          return false;
-        }
-        if ( $("#user_nickname").val().trim() == "" )
-        {
-          var message = "닉네임을 입력해 주세요";
-          $("#user_nickname").val("");
-          $("#user_nickname").focus();
-          alert(message);
-          return false;
-        }
+    }
+    //check validate sign up condition
+    /*
+      check empty field
+      ID length >= 6
+      password length >= 8
+    */
+    function onSignSubmit(){
+      if ( $("#user_id").val().trim() == "" ){
+        var message = "아이디를 입력해 주세요";
+        $("#user_id").val("");
+        $("#user_id").focus();
+        alert(message);
+        return false;
       }
-      </script>
+      if ( $("#user_id").val().trim().length<6){
+        var message = "아이디는 6글자 이상 가능합니다";
+        $("#user_id").val("");
+        $("#user_id").focus();
+        alert(message);
+        return false;
+      }
+      if ( $("#user_pwd").val().trim() == "" ){
+        var message = "비밀번호를 입력해 주세요";
+        $("#user_pwd").val("");
+        $("#user_pwd").focus();
+        alert(message);
+        return false;
+      }
+      if ( $("#user_pwd").val().trim().length <8 ){
+        var message = "비밀번호는 8글자 이상 가능합니다";
+        $("#user_pwd").val("");
+        $("#user_pwd").focus();
+        alert(message);
+        return false;
+      }
+      if ( $("#user_nickname").val().trim() == "" ){
+        var message = "닉네임을 입력해 주세요";
+        $("#user_nickname").val("");
+        $("#user_nickname").focus();
+        alert(message);
+        return false;
+      }
+    }
+  </script>
 </head>
 <body>
   <!-- sign up form -->
   <!-- user_id, user_pwd, user_nickname -->
   <!-- sign up(submit), cancel(back) button -->
-  <form action="/check" method="post" onsubmit="return onSignSubmit();">
-    <input type="hidden" name="checked" id="checked" value="false">
-    아이디 : <input type="text" name="user_id" id="user_id" required><br/>
-    비밀번호 : <input type="password" name="user_pwd" id="user_pwd" required><br/>
-    닉네임 : <input type="text" name="user_nickname" id="user_nickname" required><br/>
-    <input type="submit" value="sign up" >
-    <input type="button" value="cancel" onclick = "history.back(-1);">
-  </form>
+  <div id="frame">
+    <form action="/check" method="post" onsubmit="return onSignSubmit();">
+      <input type="hidden" name="checked" id="checked" value="false">
+      <table>
+        <tr>
+          <td colspan="2"><p align="center"><%=title%></p></td>
+        </tr>
+        <tr>
+          <td><p>아이디 : </p></td>
+          <td><input type="text" name="user_id" id="user_id" required></td>
+        </tr>
+        <tr>
+          <td><p>비밀번호 : &nbsp</p></td>
+          <td><input type="password" name="user_pwd" id="user_pwd" required></td>
+        </tr>
+        <tr>
+          <td><p>닉네임 : </p></td>
+          <td><input type="text" name="user_nickname" id="user_nickname" required></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="sign up" ></td>
+          <td><input type="button" value="cancel" onclick = "history.back(-1);"></td>
+        </tr>
+      </table>
+    </form>
+  </div>
 </body>
 </html>
