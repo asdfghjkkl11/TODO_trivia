@@ -28,9 +28,13 @@
   sudo npm install body-parser
   sudo npm install fs
   ```
-
+## if you want start app, command these.
+  ```
+  npm node app.js //nodejs
+  npm run serve //nodemon
+  ```
 you can experience at 
 
-[aws EC2](http://ec2-54-180-96-156.ap-northeast-2.compute.amazonaws.com:3000)
+[aws EC2](http://13.125.216.93:3000)
 
 [git](https://github.com/asdfghjkkl11/TODO_trivia.git)
