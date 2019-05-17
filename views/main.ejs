@@ -28,10 +28,123 @@
         padding-bottom: 20px;
         background-color: rgba(0,0,0,0.7);
       }
-      body{
+      @import url("https://fonts.googleapis.com/css?family=Merriweather");
+      body {
         background-repeat : repeat;
         background-image: url('/static/images/bg.png');
         color: #f2f2f2;
+        background-color: #0D324D;
+        text-align: center;
+      }
+
+      .btn {
+        padding: 10px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        position: relative;
+        border: 2px solid white;
+        outline: none;
+        color: white;
+        background-color: transparent;
+        margin: 20px;
+        font-family: 'Merriweather', serif;
+        white-space: nowrap;
+      }
+      .btn--border::after, .btn--border::before,
+      .btn--border span::after,
+      .btn--border span::before {
+        content: "";
+        position: absolute;
+        background-color: white;
+        transition: 0.5s ease;
+      }
+      .btn--border::after, .btn--border::before {
+        height: 100%;
+        width: 2px;
+        top: -2px;
+      }
+      .btn--border::after {
+        left: -2px;
+      }
+      .btn--border::before {
+        right: -2px;
+      }
+      .btn--border span::after,
+      .btn--border span::before {
+        height: 2px;
+        width: 100%;
+        left: -2px;
+      }
+      .btn--border span::after {
+        top: -2px;
+      }
+      .btn--border span::before {
+        bottom: -2px;
+      }
+      .btn--border:hover:after {
+        transform: translatex(-12px);
+      }
+      .btn--border:hover:before {
+        transform: translatex(12px);
+      }
+      .btn--border:hover span::after {
+        transform: translatey(-12px);
+      }
+      .btn--border:hover span::before {
+        transform: translatey(12px);
+      }
+      .btn--swap span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 10px 15px;
+        font-size: 15px;
+        box-sizing: border-box;
+        opacity: 0;
+        color: black;
+        transition: 0.35s ease;
+      }
+      .btn--swap::before {
+        content: "";
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 0;
+        height: 100%;
+        background-color: white;
+        transition: 0.5s ease;
+      }
+      .btn--swap:hover:before {
+        width: 100%;
+      }
+      .btn--swap:hover span {
+        opacity: 1;
+      }
+      .btn--future::after, .btn--future::before {
+        content: "";
+        position: absolute;
+        border: 2px solid white;
+        width: calc(100% + 15px);
+        height: 40px;
+        transition: 0.5s ease;
+      }
+      .btn--future::after {
+        top: -15px;
+        left: -15px;
+        border-right: none;
+        border-bottom: none;
+      }
+      .btn--future::before {
+        bottom: -15px;
+        right: -15px;
+        border-left: none;
+        border-top: none;
+      }
+      .btn--future:hover:after, .btn--future:hover:before {
+        width: calc(100% - 30px);
+        height: 60px;
       }
       .itemBox {
           border: solid 2px #222222;
@@ -86,6 +199,11 @@
   			font-size: 16px;
   			resize: none;
   		}
+      p{
+        margin:5px;
+        padding:5px;
+        font-size: 27px;
+      }
     </style>
     <style>
       #sortable { list-style-type: none; margin: 0; padding: 0; width: 400px; }
@@ -310,9 +428,9 @@
                      + "<div style='float:left;'>"
                      + "<span class='itemNum'></span> "
                      + "<input type='hidden' name='success' value='false'>"
-                     + "title :<input type='text' name='title' "
+                     + "제목 :<input type='text' name='title' "
                      + "style='width:350px; box-sizing: border-box; border: solid 2px rgba(90,90,90,0.8); border-radius: 5px;'>"
-                     + "<br>content:<br> <textarea name='content' style='width:480px;'></textarea>"
+                     + "<br><br><textarea name='content' style='width:480px;'></textarea>"
                      + "TODO<input type='checkbox' name='check' value='true' checked='true'>"
                      + "<input type='date' name='todo' value='1995-01-01'>"
                      + "</div>"
@@ -323,25 +441,25 @@
   </head>
   <body>
     <div id="frame">
-      <h1><%= title %></h1>
+      <h1 style="font-size:60px;"><%= title %></h1>
       <!-- check login -->
       <% if( !nickname ) { %>
         <p>로그인을 해주세요.</p>
-        <a href="/login">로그인</a>
-        <a href="/sign">회원가입</a>
+        <button class="btn btn--future" onclick = "location.href = '/login' ">로그인</button>
+        <button class="btn btn--border" onclick = "location.href = '/sign' ">회원가입<span></span></button>
       <% } else { %>
         <p>안녕하세요. <%= nickname %>님</p>
-        <a href="/logout">로그아웃</a>
+        <button class="btn btn--swap" onclick = "location.href = '/logout' ">로그아웃<span>로그아웃</span></button>
       <% } %>
       <div>
         <!-- service only login user -->
-        <div style="float:left;width:100px;">TODO-list : </div>
+        <div style="float:left;width:250px;font-size:40px;">TODO-list : </div>
         <div style="clar:both;">
           <% if( nickname ) { %>
-            <input type="button" id="addItem" value="추가" onclick="createItem();" >
-            <input type="button" id="submitItem" value="저장" onclick="submitItem();" >
+            <button class="btn btn--future" id="addItem" onclick = "createItem()">추가</button>
+            <button class="btn btn--border" id="submitItem" onclick = "submitItem()">저장<span></span></button>
           <% } else { %>
-            <p>로그인시 이용 가능합니다.</p>
+            <p>로그인시 이용 가능</p>
           <% } %>
         </div>
       </div>
@@ -355,9 +473,9 @@
               <div style='float:left;'>
                 <span class='itemNum'></span>
                 <input type='hidden' name='success' value='<%=data[i].success%>'>
-                title : <input type='text' name='title' value='<%=data[i].title%>'
+                제목 : <input type='text' name='title' value='<%=data[i].title%>'
                   style='width:350px; box-sizing: border-box; border: solid 2px rgba(90,90,90,0.8); border-radius: 5px;'>
-                <br>content:<br> <textarea name='content' style='width:480px;'><%=data[i].content%></textarea>
+                <br><br><textarea name='content' style='width:480px;'><%=data[i].content%></textarea>
                 TODO
                 <% if(data[i].check=='true'){%>
                   <input type='checkbox' name='check'checked='<%=data[i].check%>'value= '<%=data[i].check%>' >
@@ -374,10 +492,12 @@
         } %>
       </div>
     </div>
-    <div id="fixed">
-      <div id="fixed_head" style="width:80px; height:22px;float:left;">deadline</div>
-      <div id="fixed_close" style="width:50px; height:22px;float:right;">[click]</div>
-      <div id="fixed_body"><br></div>
-    </div>
+    <% if( nickname ) { %>
+      <div id="fixed">
+        <div id="fixed_head" style="width:80px; height:22px;float:left;">deadline</div>
+        <div id="fixed_close" style="width:50px; height:22px;float:right;">[click]</div>
+        <div id="fixed_body"><br></div>
+      </div>
+    <%}%>
   </body>
 </html>

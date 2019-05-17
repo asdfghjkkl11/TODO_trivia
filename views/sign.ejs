@@ -7,19 +7,131 @@
     <title><%= title %></title>
     <style>
       #frame{
-        width: 300px;
-        height: 250px;
+        width: 450px;
+        height: 350px;
         margin: 0 auto;
-        margin-top: 15%;
-        padding-left: 50px;
-        padding-right: 50px;
+        margin-top: 10%;
+        padding-left: 110px;
         padding-bottom: 50px;
         background-color: rgba(0,0,0,0.8);
       }
-      body{
+      @import url("https://fonts.googleapis.com/css?family=Merriweather");
+      body {
         background-repeat : repeat;
         background-image: url('/static/images/bg.png');
         color: #f2f2f2;
+        background-color: #0D324D;
+        text-align: center;
+      }
+
+      .btn {
+        padding: 10px 15px;
+        font-size: 15px;
+        cursor: pointer;
+        position: relative;
+        border: 2px solid white;
+        outline: none;
+        color: white;
+        background-color: transparent;
+        margin: 20px;
+        font-family: 'Merriweather', serif;
+        white-space: nowrap;
+      }
+      .btn--border::after, .btn--border::before,
+      .btn--border span::after,
+      .btn--border span::before {
+        content: "";
+        position: absolute;
+        background-color: white;
+        transition: 0.5s ease;
+      }
+      .btn--border::after, .btn--border::before {
+        height: 100%;
+        width: 2px;
+        top: -2px;
+      }
+      .btn--border::after {
+        left: -2px;
+      }
+      .btn--border::before {
+        right: -2px;
+      }
+      .btn--border span::after,
+      .btn--border span::before {
+        height: 2px;
+        width: 100%;
+        left: -2px;
+      }
+      .btn--border span::after {
+        top: -2px;
+      }
+      .btn--border span::before {
+        bottom: -2px;
+      }
+      .btn--border:hover:after {
+        transform: translatex(-12px);
+      }
+      .btn--border:hover:before {
+        transform: translatex(12px);
+      }
+      .btn--border:hover span::after {
+        transform: translatey(-12px);
+      }
+      .btn--border:hover span::before {
+        transform: translatey(12px);
+      }
+      .btn--swap span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        padding: 10px 15px;
+        font-size: 15px;
+        box-sizing: border-box;
+        opacity: 0;
+        color: black;
+        transition: 0.35s ease;
+      }
+      .btn--swap::before {
+        content: "";
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 0;
+        height: 100%;
+        background-color: white;
+        transition: 0.5s ease;
+      }
+      .btn--swap:hover:before {
+        width: 100%;
+      }
+      .btn--swap:hover span {
+        opacity: 1;
+      }
+      .btn--future::after, .btn--future::before {
+        content: "";
+        position: absolute;
+        border: 2px solid white;
+        width: calc(100% + 15px);
+        height: 40px;
+        transition: 0.5s ease;
+      }
+      .btn--future::after {
+        top: -15px;
+        left: -15px;
+        border-right: none;
+        border-bottom: none;
+      }
+      .btn--future::before {
+        bottom: -15px;
+        right: -15px;
+        border-left: none;
+        border-top: none;
+      }
+      .btn--future:hover:after, .btn--future:hover:before {
+        width: calc(100% - 30px);
+        height: 60px;
       }
     </style>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
@@ -87,7 +199,7 @@
       <input type="hidden" name="checked" id="checked" value="false">
       <table>
         <tr>
-          <td colspan="2"><p align="center"><%=title%></p></td>
+          <td colspan="2"><p align="center" style="font-size:30px"><%=title%></p></td>
         </tr>
         <tr>
           <td><p>아이디 : </p></td>
@@ -102,8 +214,8 @@
           <td><input type="text" name="user_nickname" id="user_nickname" required></td>
         </tr>
         <tr>
-          <td><input type="submit" value="sign up" ></td>
-          <td><input type="button" value="cancel" onclick = "history.back(-1);"></td>
+          <td><button class="btn btn--swap">회원가입<span>회원가입</span></button></td>
+          <td><button type="button" class="btn btn--border" onclick = "history.back(-1);">취소<span></span></button></td>
         </tr>
       </table>
     </form>
