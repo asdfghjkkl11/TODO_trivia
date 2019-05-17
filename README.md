@@ -31,6 +31,6 @@
 
 you can experience at 
 
-[aws EC2](https://ec2-54-180-96-156.ap-northeast-2.compute.amazonaws.com:3000)
+[aws EC2](http://ec2-54-180-96-156.ap-northeast-2.compute.amazonaws.com:3000)
 
 [git](https://github.com/asdfghjkkl11/TODO_trivia.git)
