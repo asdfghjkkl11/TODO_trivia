@@ -23,3 +23,7 @@ if modules are uninstalled, install modules below.
   sudo npm install session-file-store
   sudo npm install body-parser
   sudo npm install fs
+
+
+you can experience at 'ec2-54-180-96-156.ap-northeast-2.compute.amazonaws.com:3000'
+https://github.com/asdfghjkkl11/TODO_trivia.git
