@@ -1,5 +1,5 @@
 # TODO_trivia
-
+![img0](https://github.com/asdfghjkkl11/TODO_trivia/blob/master/public/images/trivia.PNG)
 ## initial setting (if not installed).
   ```
   sudo apt-get install git-core
