@@ -21,6 +21,18 @@ app.use('/sign',sign);
 app.use('/upload', upload);
 app.use('/check',check);
 app.use('/bg',bg);
+app.get('*',function(req,res,next){
+  res.status(404);
+  if(req.accepts('html')){
+    res.render('404',{url:req.url});
+    return;
+  }
+  if(req.accepts('json')){
+    res.send({error:'Not found'});
+    return;
+  }
+  res.type('txt').send('Not found');
+});
 app.listen(3000, function() {
   console.log("Connect!");
 });
