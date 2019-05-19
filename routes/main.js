@@ -20,6 +20,7 @@ router.use(bodyParser.urlencoded({extended: true}));
 router.get('/', function(req, res, next) {
   let list=[];
   if(req.session.Id!=null){
+    //list find
     list=ListRealm.objects('List').filtered(
       'user= "'+req.session.Id+'"'
     );
@@ -32,6 +33,7 @@ router.get('/', function(req, res, next) {
   else, laod data from ListRealm go to /
 */
 router.post('/', function(req, res, next) {
+  //user find
   let user=UserRealm.objects('User').filtered(
     'Id= "'+req.body['user_id']+'" AND '+
     'password= "'+req.body['user_pwd']+'"'
@@ -43,6 +45,7 @@ router.post('/', function(req, res, next) {
     req.session.nickname=user[0].name;
     let list=[];
     if(req.session.Id!=null){
+      //list find
       list=ListRealm.objects('List').filtered(
         'user= "'+req.session.Id+'"'
       );

@@ -31,10 +31,12 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   let list=[];
   if(req.session.Id!=null){
+    //list find
     list=ListRealm.objects('List').filtered(
       'user= "'+req.session.Id+'"'
     );
     ListRealm.write(() => {
+      //list delete
       ListRealm.delete(list);
       if(req.body['title'].length!=0){
         let title=req.body['title'].split(',');
@@ -43,6 +45,7 @@ router.post('/', function(req, res, next) {
         let check=req.body['check'].split(',');
         let todo=req.body['todo'].split(',');
         let leng=title.length;
+        //list create
         for(let i = 0;i < leng; i++){
           ListRealm.create('List', {
             user: req.body['user'],
@@ -56,6 +59,7 @@ router.post('/', function(req, res, next) {
         }
       }
     });
+    //list find
     list=ListRealm.objects('List').filtered(
       'user= "'+req.body['user']+'"'
     );

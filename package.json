@@ -1,6 +1,6 @@
 {
   "name": "todo_trivia",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "summer coding festival",
   "main": "app.js",
   "scripts": {
