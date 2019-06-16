@@ -35,6 +35,6 @@
   ```
 you can experience at 
 
-[aws EC2](http://15.164.96.131:3000/)
+[aws EC2](http://15.164.96.131:3000/)(closed)
 
 [git](https://github.com/asdfghjkkl11/TODO_trivia.git)
